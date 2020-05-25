@@ -124,6 +124,7 @@ instance Group (Add Int)
 
 -- {{{ SEMIRING
 
+-- TODO: Break this up into distributivity and annihilation classes and turn this into a type synonym
 {-|
 Two monoids structures on the same set: an "additive" one which is commutative, and a "multiplicative" one over which the additive structure distributes
 
