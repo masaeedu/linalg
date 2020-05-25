@@ -1,0 +1,31 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.33.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: de9c0b9389ee5636485b93b3af132735ceba8421224922d5d76bc2ff900e2dd2
+
+name:           linalg
+version:        0.0.0
+author:         Asad Saeeduddin
+maintainer:     masaeedu@gmail.com
+license:        MIT
+build-type:     Simple
+
+library
+  exposed-modules:
+      LinearAlgebra
+      Num
+  other-modules:
+      Paths_linalg
+  hs-source-dirs:
+      src
+  default-extensions: GADTs StandaloneDeriving DeriveFunctor DerivingVia GeneralizedNewtypeDeriving ScopedTypeVariables RankNTypes QuantifiedConstraints TypeApplications TypeOperators MultiParamTypeClasses ConstraintKinds DataKinds PolyKinds KindSignatures UndecidableInstances FlexibleInstances FlexibleContexts DefaultSignatures
+  ghc-options: -Wall
+  build-depends:
+      base >=4.12 && <4.13
+    , fin >=0.1 && <0.2
+    , vec >=0.3 && <0.4
+    , vector >=0.12.0 && <0.12.1
+  default-language: Haskell2010
