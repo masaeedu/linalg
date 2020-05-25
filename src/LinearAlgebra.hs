@@ -189,9 +189,9 @@ instance Module s a => Semiring (Linear s a a)
 -- | A @DMatrix s b a@ is a matrix of @a@ rows and @b@ columns. The somewhat awkward ordering of the type parameters
 --   arises from the way we wish the category instance and matrix multiplication to work (the "row, column" order more
 --   natural in plain speaking would give us the dual of the category we want).
-data DMatrix s j i = (FDim s i => FDim s j) => DMatrix { runDMatrix :: FDim s i => Vector s }
+data DMatrix s j i = (FDim s j => FDim s i) => DMatrix { runDMatrix :: FDim s j => Vector s }
 
-deriving instance (Show s, FDim s i) => Show (DMatrix s j i)
+deriving instance (Show s, FDim s j) => Show (DMatrix s j i)
 
 -- {{{ VECTOR FINAGLING
 
@@ -237,22 +237,22 @@ instance Category (DMatrix s)
     matrix i j $ \i' j' -> dotproduct (row i x i' ix) (col x j j' xj)
 
 -- | Finite-dimensional linear maps inherit a pointwise abelian group structure from their codomain
-instance FDim s j => Semigroup (DMatrix s j i)
+instance FDim s i => Semigroup (DMatrix s j i)
   where
   DMatrix a <> DMatrix b = DMatrix $ liftA2 (+) a b
 
-instance FDim s j => Commutative (DMatrix s j i)
+instance FDim s i => Commutative (DMatrix s j i)
 
-instance (FDim s i, FDim s j) => Monoid (DMatrix s j i)
+instance FDim s i => Monoid (DMatrix s j i)
   where
   mempty = DMatrix $ V.replicate (dimension (Proxy @i) * dimension (Proxy @j)) zero
 
-instance (FDim s i, FDim s j) => Group (DMatrix s j i)
+instance FDim s i => Group (DMatrix s j i)
   where
   invert (DMatrix v) = DMatrix $ fmap negate v
 
 -- | The abelian group of finite-dimensional R-linear maps is a full module when R is a commutative ring
-instance (Commutative (Mul s), FDim s i, FDim s j) => Module s (DMatrix s j i)
+instance (Commutative (Mul s), FDim s i) => Module s (DMatrix s j i)
   where
   s |*| DMatrix v = DMatrix $ fmap (s *) v
 
@@ -261,14 +261,14 @@ instance (Commutative (Mul s), FDim s i, FDim s j) => Hom s (DMatrix s j i) j i
   m |$| v = build $ runDMatrix $ m . DMatrix @s @(V Nat1 s) (decompose v)
 
 -- | A module of finite-dimensional R-linear maps is finite-dimensional
-instance (Commutative (Mul s), FDim s a, FDim s b) => FDim s (DMatrix s a b)
+instance (Commutative (Mul s), FDim s j, FDim s i) => FDim s (DMatrix s j i)
   where
   basis =
     let
-    n = dimension @s $ Proxy @a
-    m = dimension @s $ Proxy @b
+    rows = dimension @s $ Proxy @i
+    cols = dimension @s $ Proxy @j
     in
-    matrix n m $ \i j -> DMatrix $ matrix n m $ \i' j' -> if i == i' && j == j' then one else zero
+    matrix rows cols $ \i j -> DMatrix $ matrix rows cols $ \i' j' -> if i == i' && j == j' then one else zero
   decompose = runDMatrix
 
 -- | The set of finite-dimensional endomorphisms on a given module forms a ring
@@ -366,21 +366,21 @@ instance
 
 -- {{{ LINEAR MAPS: STATIC DIMENSION
 
-data SMatrix s j i = (SNatI i => SNatI j) => SMatrix { runSMatrix :: SNatI i => V'.Vec i (V'.Vec j s) }
+data SMatrix s j i = (SNatI j => SNatI i) => SMatrix { runSMatrix :: SNatI j => V'.Vec i (V'.Vec j s) }
 
 toDMatrix :: (SDim i s (V i s), SDim j s (V j s)) => SMatrix s i j -> DMatrix s (V i s) (V j s)
 toDMatrix (SMatrix v) = DMatrix $ V'.foldMap convertV2V v
 
-indexSM :: SNatI i => Fin i -> Fin j -> SMatrix s j i -> s
+indexSM :: SNatI j => Fin i -> Fin j -> SMatrix s j i -> s
 indexSM i j (SMatrix v) = unVec (unVec v i) j
 
-scol :: SNatI i => Fin j -> SMatrix s j i -> Vec i s
+scol :: SNatI j => Fin j -> SMatrix s j i -> Vec i s
 scol j (SMatrix v) = fmap (($ j) . unVec) v
 
-srow :: SNatI i => Fin i -> SMatrix s j i -> Vec j s
+srow :: SNatI j => Fin i -> SMatrix s j i -> Vec j s
 srow i (SMatrix v) = unVec v i
 
-instance (Show s, Ring s, SDim i s (V i s), SDim j s (V j s)) => Show (SMatrix s j i)
+instance (Show s, SDim i s (V i s), SDim j s (V j s)) => Show (SMatrix s j i)
   where
   show x = show $ convertV2V $ fmap convertV2V $ runSMatrix x
 
@@ -396,16 +396,16 @@ instance Ring s => Semigroup (SMatrix s j i)
 
 instance Ring s => Commutative (SMatrix s j i)
 
-instance (Ring s, SNatI j) => Monoid (SMatrix s j i)
+instance (Ring s, SNatI i) => Monoid (SMatrix s j i)
   where
   mempty = SMatrix $ pure $ pure $ zero
 
-instance (Ring s, SNatI j) => Group (SMatrix s j i)
+instance (Ring s, SNatI i) => Group (SMatrix s j i)
   where
   invert (SMatrix v) = SMatrix $ fmap (fmap negate) v
 
 -- Equip with module structure
-instance (CommutativeRing s, SNatI j) => Module s (SMatrix s j i)
+instance (CommutativeRing s, SNatI i) => Module s (SMatrix s j i)
   where
   s |*| SMatrix v = SMatrix $ fmap (fmap (s *)) v
 
@@ -444,9 +444,8 @@ instance (CommutativeRing s, SNatI j, SNatI i, SNatI c, Mult i j ~ c, Flatten i 
   sbasis = flatten $ Vec $ \i -> Vec $ \j -> SMatrix $ Vec $ \i' -> Vec $ \j' -> if i == i' && j == j' then one else zero
   sdecompose (SMatrix v) = flatten v
 
-instance (CommutativeRing s, SDim a s x, SDim b s y) => Hom s (SMatrix s a b) x y
+instance (CommutativeRing s, SDim j s x, SDim i s y) => Hom s (SMatrix s j i) x y
   where
   m@(SMatrix _) |$| v = sbuild $ fmap V'.head $ runSMatrix $ (m .) $ SMatrix $ fmap V'.singleton $ sdecompose v
 
 -- }}}
-
