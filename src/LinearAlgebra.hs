@@ -11,7 +11,7 @@ module LinearAlgebra where
 import Prelude hiding (Num(..), recip, id, (.))
 
 import Data.Proxy (Proxy (..))
-import Data.Type.Nat (SNatI(..), SNat(..), Nat(..), Nat0, Nat1, Nat2, Nat3, Mult, Plus)
+import Data.Type.Nat (SNatI(..), SNat(..), Nat(..), Nat1, Mult, Plus)
 import Data.Foldable (fold)
 
 import Data.Vector (Vector)
@@ -22,7 +22,6 @@ import Data.Fin
 import Data.Vec.Pull (Vec(..))
 import qualified Data.Vec.Pull as V'
 
-import Data.Void (Void)
 import Data.Coerce (coerce)
 
 import Control.Category (Category(..))
@@ -297,33 +296,6 @@ newtype V n a = V { runV :: Vec n a }
 instance (Show a, SNatI n) => Show (V n a)
   where
   show (V v) = show $ convertV2V v
-
--- {{{ CONVENIENT @Vec@ construction
-
-class Construct n v c | n v -> c
-  where
-  vec :: c -> V'.Vec n v
-
-instance Construct Nat0 Void ()
-  where
-  vec = const V'.empty
-
-instance Construct Nat1 a a
-  where
-  vec = V'.singleton
-
-instance Construct Nat2 v (v, v)
-  where
-  vec (a, b) = V'.cons a $ V'.cons b $ V'.empty
-
-instance Construct Nat3 v (v, v, v)
-  where
-  vec (a, b, c) = V'.cons a $ V'.cons b $ V'.cons c $ V'.empty
-
-vector :: Construct n v c => c -> V n v
-vector = V . vec
-
--- }}}
 
 deriving via (Vec n (Add a)) instance Semigroup (Add a) => Semigroup (V n a)
 deriving via (Vec n (Add a)) instance Monoid    (Add a) => Monoid    (V n a)
