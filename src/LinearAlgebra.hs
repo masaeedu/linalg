@@ -453,6 +453,8 @@ instance (Show a, SNatI n) => Show (V n a)
   where
   show (V v) = show $ convertV2V v
 
+-- {{{ CONVENIENT @Vec@ construction
+
 class Construct n v c | n v -> c
   where
   vec :: c -> V'.Vec n v
@@ -475,6 +477,8 @@ instance Construct Nat3 v (v, v, v)
 
 vector :: Construct n v c => c -> V n v
 vector = V . vec
+
+-- }}}
 
 deriving via (Vec n (Add a)) instance Semigroup (Add a) => Semigroup (V n a)
 deriving via (Vec n (Add a)) instance Monoid    (Add a) => Monoid    (V n a)
