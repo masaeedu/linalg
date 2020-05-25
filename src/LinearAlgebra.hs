@@ -22,8 +22,8 @@ import Data.Fin
 import Data.Vec.Pull (Vec(..))
 import qualified Data.Vec.Pull as V'
 
-import Data.Void
-import Data.Coerce
+import Data.Void (Void)
+import Data.Coerce (coerce)
 
 import Control.Category (Category(..))
 import Control.Applicative (liftA2)
@@ -97,7 +97,7 @@ class (FDim r v, SNatI d) => SDim d r v | v -> d
 
   sdecompose :: v -> Vec d r
 
--- | Given a statically-sized vector of coordinates, build a vector
+-- | Given a statically-sized array of coordinates, build a vector
 sbuild :: SDim d r v => Vec d r -> v
 sbuild = fold . liftA2 (flip (|*|)) sbasis
 
@@ -450,21 +450,3 @@ instance (CommutativeRing s, SDim a s x, SDim b s y) => Hom s (SMatrix s a b) x 
 
 -- }}}
 
--- {{{ TESTING
-
-v1 :: V Nat2 Int
-v1 = vector (1, 0)
-
-m1 :: SMatrix Int Nat2 Nat2
-m1 = SMatrix $ vec (vec (0, -1), vec (1, 0))
-
-m2 :: SMatrix Int Nat2 Nat2
-m2 = SMatrix $ vec (vec (1, 2), vec (3, 4))
-
-m3 :: SMatrix Int Nat2 Nat2
-m3 = SMatrix $ vec (vec (5, 6), vec (7, 8))
-
-result :: V Nat2 Int
-result = m1 . m2 . m3 |$| v1
-
--- }}}
