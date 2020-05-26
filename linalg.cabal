@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: de9c0b9389ee5636485b93b3af132735ceba8421224922d5d76bc2ff900e2dd2
+-- hash: a301c8a50cfcc495539f385846f077fa1d3aa923a3a372bd33930071e97d6f54
 
 name:           linalg
 version:        0.0.0
@@ -15,13 +15,19 @@ build-type:     Simple
 
 library
   exposed-modules:
-      LinearAlgebra
-      Num
+      Numeric.Module
+      Numeric.Module.Linear
+      Numeric.Module.Linear.DMatrix
+      Numeric.Module.Linear.Function
+      Numeric.Module.Linear.SMatrix
+      Numeric.Ring
+      Prelude
+      Scratch
   other-modules:
       Paths_linalg
   hs-source-dirs:
       src
-  default-extensions: GADTs StandaloneDeriving DeriveFunctor DerivingVia GeneralizedNewtypeDeriving ScopedTypeVariables RankNTypes QuantifiedConstraints TypeApplications TypeOperators MultiParamTypeClasses ConstraintKinds DataKinds PolyKinds KindSignatures UndecidableInstances FlexibleInstances FlexibleContexts DefaultSignatures
+  default-extensions: GADTs StandaloneDeriving DeriveFunctor DerivingVia GeneralizedNewtypeDeriving ScopedTypeVariables RankNTypes QuantifiedConstraints TypeApplications TypeOperators MultiParamTypeClasses ConstraintKinds DataKinds PolyKinds KindSignatures UndecidableInstances FlexibleInstances FlexibleContexts DefaultSignatures NoImplicitPrelude
   ghc-options: -Wall
   build-depends:
       base >=4.12 && <4.13

@@ -40,4 +40,6 @@ default-extensions:
   - FlexibleContexts
   - DefaultSignatures
 
+  - NoImplicitPrelude
+
 library: {}
