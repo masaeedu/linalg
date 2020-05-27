@@ -152,4 +152,15 @@ instance (CommutativeRing s, SDim j s x, SDim i s y) => Hom s (SMatrix s j i) x 
   where
   m@(SMatrix _) |$| v = sbuild $ fmap V'.head $ runSMatrix $ (m .) $ SMatrix $ fmap V'.singleton $ sdecompose v
 
+-- The endomorphism group of matrices on a given vector space is a full ring
+instance Ring s => Semigroup (Mul (SMatrix s a a))
+  where
+  (<>) = coerce ((.) @(SMatrix s))
+
+instance Ring s => Monoid (Mul (SMatrix s a a))
+  where
+  mempty = coerce (id @(SMatrix s))
+
+instance (Ring s, SNatI a) => Semiring (SMatrix s a a)
+
 -- }}}
