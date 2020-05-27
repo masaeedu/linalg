@@ -7,7 +7,6 @@ import Data.Vector (Vector)
 import qualified Data.Vector as V
 import Data.Functor.Identity (Identity(..))
 import Data.Proxy (Proxy(..))
-import Control.Applicative (liftA2)
 import Control.Monad (join)
 
 import Numeric.Ring
@@ -33,7 +32,7 @@ row n m i = V.slice (i * n) m
 
 -- | Retrieves a column from a matrix of specified dimension
 col :: Int -> Int -> Int -> Vector x -> Vector x
-col n m j v = V.generate n $ \i -> v V.! ((i * m) + j)
+col n m j v = V.generate n $ \i -> v V.! (i * m + j)
 
 -- | Generates a matrix of specified dimension containing a given value at a given cell
 cell :: Monoid (Add x) => Int -> Int -> Int -> Int -> x -> Vector x
@@ -41,7 +40,7 @@ cell n m i j v = matrix n m $ \i' j' -> if i == i' && j == j' then v else zero
 
 -- | Produces the dot product of two vectors
 dotproduct :: (Monoid (Add r), Monoid (Mul r)) => Vector r -> Vector r -> r
-dotproduct x y = getAdd $ foldMap Add $ liftA2 (*) x y
+dotproduct x y = getAdd $ foldMap Add $ V.zipWith (*) x y
 
 -- }}}
 
@@ -67,7 +66,7 @@ instance Category (DMatrix s)
 -- | Finite-dimensional linear maps inherit a pointwise abelian group structure from their codomain
 instance FDim s i => Semigroup (Add (DMatrix s j i))
   where
-  Add (DMatrix a) <> Add (DMatrix b) = Add $ DMatrix $ liftA2 (+) a b
+  Add (DMatrix a) <> Add (DMatrix b) = Add $ DMatrix $ V.zipWith (+) a b
 
 instance FDim s i => Commutative (Add (DMatrix s j i))
 

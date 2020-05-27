@@ -9,12 +9,9 @@ import Data.Proxy (Proxy(..))
 
 import Data.Type.Nat
 import Data.Vec.Pull (Vec(..))
-import Data.Vector as V (Vector, length)
 import qualified Data.Vec.Pull as V'
+import Data.Vector as V (Vector, length, zipWith)
 import Data.Functor.Identity
-
-import Control.Applicative (liftA2)
-
 
 import Numeric.Ring
 
@@ -66,7 +63,7 @@ class Module r v => FDim r v
 
 -- | Given an array of scalars representing coordinates, build a vector
 build :: FDim r v => Vector r -> v
-build = getAdd . foldMap Add . liftA2 (flip (|*|)) basis
+build = getAdd . foldMap Add . V.zipWith (flip (|*|)) basis
 
 -- | Obtain the dimension of a given finite dimensional vector space
 dimension :: FDim r v => Proxy v -> Int
@@ -82,7 +79,7 @@ class (FDim r v, SNatI d) => SDim d r v | v -> d
 
 -- | Given a statically-sized array of coordinates, build a vector
 sbuild :: SDim d r v => Vec d r -> v
-sbuild = getAdd . foldMap Add . liftA2 (flip (|*|)) sbasis
+sbuild = getAdd . foldMap Add . V'.zipWith (flip (|*|)) sbasis
 
 -- | Obtain the dimension of a statically-dimensioned vector space as a compile time constant
 sdimension :: (SDim d r v, SNatI d) => Proxy v -> SNat d
