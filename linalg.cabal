@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: a301c8a50cfcc495539f385846f077fa1d3aa923a3a372bd33930071e97d6f54
+-- hash: e2a2090d6bc80307c6cf3e1f6248e5f8f9a6455e1ecb09fa93fb187301a649cd
 
 name:           linalg
 version:        0.0.0
@@ -22,8 +22,29 @@ library
       Numeric.Module.Linear.SMatrix
       Numeric.Ring
       Prelude
-      Scratch
   other-modules:
+      Main
+  hs-source-dirs:
+      src
+  default-extensions: GADTs StandaloneDeriving DeriveFunctor DerivingVia GeneralizedNewtypeDeriving ScopedTypeVariables RankNTypes QuantifiedConstraints TypeApplications TypeOperators MultiParamTypeClasses ConstraintKinds DataKinds PolyKinds KindSignatures UndecidableInstances FlexibleInstances FlexibleContexts DefaultSignatures NoImplicitPrelude
+  ghc-options: -Wall
+  build-depends:
+      base >=4.12 && <4.13
+    , fin >=0.1 && <0.2
+    , vec >=0.3 && <0.4
+    , vector >=0.12.0 && <0.12.1
+  default-language: Haskell2010
+
+executable linalg
+  main-is: Main.hs
+  other-modules:
+      Numeric.Module
+      Numeric.Module.Linear
+      Numeric.Module.Linear.DMatrix
+      Numeric.Module.Linear.Function
+      Numeric.Module.Linear.SMatrix
+      Numeric.Ring
+      Prelude
       Paths_linalg
   hs-source-dirs:
       src
@@ -32,6 +53,7 @@ library
   build-depends:
       base >=4.12 && <4.13
     , fin >=0.1 && <0.2
+    , time
     , vec >=0.3 && <0.4
     , vector >=0.12.0 && <0.12.1
   default-language: Haskell2010

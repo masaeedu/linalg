@@ -42,4 +42,9 @@ default-extensions:
 
   - NoImplicitPrelude
 
-library: {}
+library:
+  other-modules: Main
+executable:
+  main: Main.hs
+  dependencies:
+    - time
