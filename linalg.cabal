@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: e2a2090d6bc80307c6cf3e1f6248e5f8f9a6455e1ecb09fa93fb187301a649cd
+-- hash: 098203db9e971881696a767254ddb12ce69b4d055010912509d09c6f7730b30a
 
 name:           linalg
 version:        0.0.0
@@ -23,7 +23,7 @@ library
       Numeric.Ring
       Prelude
   other-modules:
-      Main
+      Paths_linalg
   hs-source-dirs:
       src
   default-extensions: GADTs StandaloneDeriving DeriveFunctor DerivingVia GeneralizedNewtypeDeriving ScopedTypeVariables RankNTypes QuantifiedConstraints TypeApplications TypeOperators MultiParamTypeClasses ConstraintKinds DataKinds PolyKinds KindSignatures UndecidableInstances FlexibleInstances FlexibleContexts DefaultSignatures NoImplicitPrelude
@@ -48,11 +48,13 @@ executable linalg
       Paths_linalg
   hs-source-dirs:
       src
+      test
   default-extensions: GADTs StandaloneDeriving DeriveFunctor DerivingVia GeneralizedNewtypeDeriving ScopedTypeVariables RankNTypes QuantifiedConstraints TypeApplications TypeOperators MultiParamTypeClasses ConstraintKinds DataKinds PolyKinds KindSignatures UndecidableInstances FlexibleInstances FlexibleContexts DefaultSignatures NoImplicitPrelude
   ghc-options: -Wall
   build-depends:
       base >=4.12 && <4.13
     , fin >=0.1 && <0.2
+    , linalg
     , time
     , vec >=0.3 && <0.4
     , vector >=0.12.0 && <0.12.1

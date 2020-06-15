@@ -42,9 +42,10 @@ default-extensions:
 
   - NoImplicitPrelude
 
-library:
-  other-modules: Main
+library: {}
 executable:
+  source-dirs: test
   main: Main.hs
   dependencies:
+    - linalg
     - time
