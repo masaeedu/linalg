@@ -45,8 +45,6 @@ instance
   ( Ring a, SNatI n
   , SDim n a (V n a)
   ) => FDim a (V n a)
-  where
-  decompose (V v) = convertV2V v
 
 instance Ring a => SDim 'Z a (V 'Z a)
   where
