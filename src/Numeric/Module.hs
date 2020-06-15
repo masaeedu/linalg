@@ -85,7 +85,20 @@ sbuild = getAdd . foldMap Add . V'.zipWith (flip (|*|)) sbasis
 sdimension :: (SDim d r v, SNatI d) => Proxy v -> SNat d
 sdimension _ = snat
 
--- | A space of module homomorphisms between two R-modules (thus itself an R-module)
+{-|
+A space of module homomorphisms between two R-modules (thus itself an R-module)
+
+= Laws
+* Preservation of addition
+@
+f |$| v <> w = (f |$| v) <> (f |$| w)
+@
+
+* Preservation of scaling
+@
+f |$| a |*| v = a |*| (f |$| v)
+@
+-}
 class (Module r v1, Module r v2, Module r l) => Hom r l v1 v2
   where
   (|$|) :: l -> v1 -> v2

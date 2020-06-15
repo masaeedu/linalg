@@ -5,20 +5,6 @@ import Prelude
 import Numeric.Ring
 import Numeric.Module
 
-{-|
-A module homomorphism between two ring-modules
-
-= Laws
-* Preservation of addition
-@
-f |$| v <> w = (f |$| v) <> (f |$| w)
-@
-
-* Preservation of scaling
-@
-f |$| a |*| v = a |*| (f |$| v)
-@
--}
 data Linear s a b = (Module s a => Module s b) => Linear (Module s a => a -> b)
 
 -- | Linear maps and vector spaces form a category
