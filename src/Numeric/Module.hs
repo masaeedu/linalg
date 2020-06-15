@@ -85,7 +85,11 @@ sbuild = getAdd . foldMap Add . V'.zipWith (flip (|*|)) sbasis
 sdimension :: (SDim d r v, SNatI d) => Proxy v -> SNat d
 sdimension _ = snat
 
--- {{{ IDENTITY MODULE
+-- | A space of module homomorphisms between two R-modules (thus itself an R-module)
+class (Module r v1, Module r v2, Module r l) => Hom r l v1 v2
+  where
+  (|$|) :: l -> v1 -> v2
+  infixl 1 |$|
 
 instance Ring a => Module a (Identity a)
   where
@@ -97,5 +101,3 @@ instance Ring a => SDim Nat1 a (Identity a)
   where
   sbasis = V'.singleton $ Identity $ one
   sdecompose (Identity a) = V'.singleton a
-
--- }}}

@@ -1,10 +1,9 @@
-module Numeric.Module.Linear.Function where
+module Numeric.VSpaces.Function where
 
 import Prelude
 
 import Numeric.Ring
 import Numeric.Module
-import Numeric.Module.Linear
 
 {-|
 A module homomorphism between two ring-modules

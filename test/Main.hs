@@ -12,10 +12,9 @@ import Data.Semigroup
 import System.CPUTime
 import Data.Time.Clock
 
-import Numeric.Ring
-import Numeric.Module.Linear
-import Numeric.Module.Linear.DMatrix
-import Numeric.Module.Linear.SMatrix
+import Numeric
+import Numeric.VSpaces.DMatrix
+import Numeric.VSpaces.SMatrix
 
 -- Vector construction
 class Construct n v c | n v -> c

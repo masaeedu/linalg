@@ -1,5 +1,5 @@
 {-# LANGUAGE LambdaCase, FunctionalDependencies #-}
-module Numeric.Module.Linear.SMatrix where
+module Numeric.VSpaces.SMatrix where
 
 import Prelude
 
@@ -17,8 +17,7 @@ import Control.Applicative (liftA2)
 
 import Numeric.Ring
 import Numeric.Module
-import Numeric.Module.Linear
-import Numeric.Module.Linear.DMatrix
+import Numeric.VSpaces.DMatrix
 
 -- {{{ N-DIMENSIONAL VECTORS
 

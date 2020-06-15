@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 098203db9e971881696a767254ddb12ce69b4d055010912509d09c6f7730b30a
+-- hash: d7460285dcda5abc22e25a67dec97b27d8f91ed745d559fd061f908885863053
 
 name:           linalg
 version:        0.0.0
@@ -15,12 +15,12 @@ build-type:     Simple
 
 library
   exposed-modules:
+      Numeric
       Numeric.Module
-      Numeric.Module.Linear
-      Numeric.Module.Linear.DMatrix
-      Numeric.Module.Linear.Function
-      Numeric.Module.Linear.SMatrix
       Numeric.Ring
+      Numeric.VSpaces.DMatrix
+      Numeric.VSpaces.Function
+      Numeric.VSpaces.SMatrix
       Prelude
   other-modules:
       Paths_linalg
@@ -38,12 +38,12 @@ library
 executable linalg
   main-is: Main.hs
   other-modules:
+      Numeric
       Numeric.Module
-      Numeric.Module.Linear
-      Numeric.Module.Linear.DMatrix
-      Numeric.Module.Linear.Function
-      Numeric.Module.Linear.SMatrix
       Numeric.Ring
+      Numeric.VSpaces.DMatrix
+      Numeric.VSpaces.Function
+      Numeric.VSpaces.SMatrix
       Prelude
       Paths_linalg
   hs-source-dirs:

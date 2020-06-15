@@ -1,5 +1,5 @@
 {-# LANGUAGE InstanceSigs, ImpredicativeTypes #-}
-module Numeric.Module.Linear.DMatrix where
+module Numeric.VSpaces.DMatrix where
 
 import Prelude
 
@@ -11,7 +11,6 @@ import Control.Monad (join)
 
 import Numeric.Ring
 import Numeric.Module
-import Numeric.Module.Linear
 
 -- | A @DMatrix s b a@ is a matrix of @a@ rows and @b@ columns. The somewhat awkward ordering of the type parameters
 --   arises from the way we wish the category instance and matrix multiplication to work (the "row, column" order more
