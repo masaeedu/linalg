@@ -69,6 +69,9 @@ instance
 
 -- {{{ LINEAR MAPS: STATIC DIMENSION
 
+-- | An @SMatrix s b a@ is a matrix of @a@ rows and @b@ columns. The somewhat awkward ordering of the type parameters
+--   arises from the way we wish the category instance and matrix multiplication to work (the "row, column" order more
+--   natural in plain speaking would give us the dual of the category we want).
 data SMatrix s j i = (SNatI j => SNatI i) => SMatrix { runSMatrix :: SNatI j => V'.Vec i (V'.Vec j s) }
 
 toDMatrix :: (SDim i s (V i s), SDim j s (V j s)) => SMatrix s i j -> DMatrix s (V i s) (V j s)

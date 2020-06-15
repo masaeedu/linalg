@@ -12,9 +12,6 @@ import Control.Monad (join)
 import Numeric.Ring
 import Numeric.Module
 
--- | A @DMatrix s b a@ is a matrix of @a@ rows and @b@ columns. The somewhat awkward ordering of the type parameters
---   arises from the way we wish the category instance and matrix multiplication to work (the "row, column" order more
---   natural in plain speaking would give us the dual of the category we want).
 data DMatrix s j i = (FDim s j => FDim s i) => DMatrix { runDMatrix :: FDim s j => Vector s }
 
 deriving instance (Show s, FDim s j) => Show (DMatrix s j i)
