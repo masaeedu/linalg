@@ -17,7 +17,6 @@ import Data.Coerce (Coercible)
 import Data.Monoid (Ap(..))
 import Data.Int
 import Data.Word
-import Data.Proxy
 import Data.Functor.Identity
 
 -- {{{ NEWTYPES
